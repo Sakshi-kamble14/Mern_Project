@@ -1,0 +1,24 @@
+{
+  "name": "mern_project",
+  "version": "1.0.0",
+  "description": "This is my mern_project",
+  "homepage": "https://github.com/Sakshi-kamble14/Mern_Project#readme",
+  "bugs": {
+    "url": "https://github.com/Sakshi-kamble14/Mern_Project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sakshi-kamble14/Mern_Project.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mysql2": "^3.16.0"
+  }
+}
