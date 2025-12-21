@@ -8,15 +8,9 @@ const router=express.Router()
 router.get("/all-courses", (req, res) => {
     const { startDate, endDate } = req.query
 
-    let sql = `SELECT * FROM courses`
-    let values = []
+    const sql=`Select * from courses WHERE start_date >= CURRENT_DATE()  AND end_date <= CURRENT_DATE()`
 
-    if (startDate && endDate) {
-        sql += ` WHERE start_date >= ? AND end_date <= ?`
-        values = [startDate, endDate]
-    }
-
-    pool.query(sql, values, (error, data) => {
+    pool.query(sql, [startDate,endDate], (error, data) => {
         res.send(result.createResult(error, data))
     })
 })
