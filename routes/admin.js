@@ -4,7 +4,13 @@ const result=require('../utils/result')
 
 const router=express.Router()
 
-
+router.get('/all-course',(request,response)=>{
+    const {startDate,endDate}=request.query
+    const sql=`Select * from courses where start_date <=CURRENT_DATE() AND end_date >=CURRENT_DATE() `
+    pool.query(sql,[startDate,endDate],(error,data)=>{
+        response.send(result.createResult(error,data))
+    })
+})
 
 
 router.get('/all-active-course',(request,response)=>{
@@ -13,7 +19,7 @@ router.get('/all-active-course',(request,response)=>{
     })
 })
 
-router.post("/add-course", (request, ressponse) => {
+router.post("/add-course", (request, response) => {
     const {courseName,description,fees,startDate,endDate,videoExpireDays} = request.body
 
     const sql = `INSERT INTO courses (course_name, description, fees, start_date, end_date, video_expire_days) VALUES (?,?,?,?,?,?) `
@@ -24,9 +30,9 @@ router.post("/add-course", (request, ressponse) => {
     )
 })
 
-router.put("/update/:courseId", (requset, response) => {
+router.put("/update/:courseId", (request, response) => {
     const { courseId } = req.params
-    const {courseName,description,fees,startDate,endDate,videoExpireDays} = requset.body
+    const {courseName,description,fees,startDate,endDate,videoExpireDays} = request.body
 
     const sql = `UPDATE courses SET course_name=?,description=?,fees=?,start_date=?,end_date=?,video_expire_days=? WHERE course_id =?`
 
@@ -36,8 +42,8 @@ router.put("/update/:courseId", (requset, response) => {
     )
 })
 
-router.delete("/delete/:courseId", (requset, response) => {
-    const { courseId } = requset.params
+router.delete("/delete/:courseId", (request, response) => {
+    const { courseId } = request.params
 
     const sql = `DELETE FROM courses WHERE course_id=?`
 
