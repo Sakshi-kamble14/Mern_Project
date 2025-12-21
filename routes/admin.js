@@ -32,6 +32,16 @@ router.post("/add-course", (req, res) => {
     )
 })
 
+router.post('/student/register-to-course',(request,response)=>{
+    const {courseId,email,name,mobileNo}=request.body
+
+    const sql=`INSERT INTO students (name,email,course_id,mobile_no) VALUES (?,?,?,?)`
+
+    pool.query(sql,[name,email,courseId,mobileNo],(error,data)=>{
+        response.send(result.createResult(error,data))
+    })
+})
+
 router.put("/update/:courseId", (req, res) => {
     const { courseId } = req.params
     const {courseName,description,fees,startDate,endDate,videoExpireDays} = req.body
