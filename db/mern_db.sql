@@ -1,11 +1,18 @@
+DROP DATABASE IF EXISTS mern_db;
+
 create database mern_db;
+
 use mern_db;
+
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     email VARCHAR(100) PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'student') NOT NULL
 );
+
+DROP TABLE IF EXISTS courses;
 
 CREATE TABLE courses (
     course_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -17,6 +24,8 @@ CREATE TABLE courses (
     video_expire_days INT
 );
 
+DROP TABLE IF EXISTS students;
+
 CREATE TABLE students (
     reg_no INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
@@ -27,6 +36,8 @@ CREATE TABLE students (
     FOREIGN KEY (email) REFERENCES users(email),
     FOREIGN KEY (course_id) REFERENCES courses(course_id)
 );
+
+DROP TABLE IF EXISTS videos;
 
 CREATE TABLE videos (
     video_id INT PRIMARY KEY AUTO_INCREMENT,
