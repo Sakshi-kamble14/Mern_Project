@@ -5,8 +5,9 @@ const result=require('../utils/result')
 const router=express.Router()
 
 
-router.get("/all-courses", (req, res) => {
-    const { startDate, endDate } = req.query
+router.get("/all-courses", (request, response) => {
+    const { startDate, endDate } = request.query
+
 
     let sql = `SELECT * FROM courses`
     let values = []
@@ -17,7 +18,7 @@ router.get("/all-courses", (req, res) => {
     }
 
     pool.query(sql, values, (error, data) => {
-        res.send(result.createResult(error, data))
+        response.send(result.createResult(error, data))
     })
 })
 
