@@ -4,17 +4,28 @@ const result=require('../utils/result')
 
 const router=express.Router()
 
-router.get('/all-course',(request,response)=>{
-    const {startDate,endDate}=request.query
-    const sql=`Select * from courses where start_date <=CURRENT_DATE() AND end_date >=CURRENT_DATE() `
-    pool.query(sql,[startDate,endDate],(error,data)=>{
-        response.send(result.createResult(error,data))
+
+router.get("/all-courses", (request, response) => {
+    const { startDate, endDate } = request.query
+
+
+    let sql = `SELECT * FROM courses`
+    let values = []
+
+    if (startDate && endDate) {
+        sql += ` WHERE start_date >= ? AND end_date <= ?`
+        values = [startDate, endDate]
+    }
+
+    pool.query(sql, values, (error, data) => {
+        response.send(result.createResult(error, data))
     })
 })
 
 
 router.get('/all-active-course',(request,response)=>{
- const sql = `SELECT * FROM courses WHERE start_date <= CURRENT_DATE() AND end_date >= CURRENT_DATE()`;    pool.query(sql,(error,data)=>{
+ const sql = `SELECT * FROM courses WHERE start_date <= CURRENT_DATE() AND end_date >= CURRENT_DATE()`;    
+ pool.query(sql,(error,data)=>{
         response.send(result.createResult(error,data))
     })
 })
@@ -30,7 +41,17 @@ router.post("/add-course", (request, response) => {
     )
 })
 
-router.put("/update/:courseId", (request, response) => {
+router.post('/student/register-to-course',(request,response)=>{
+    const {courseId,email,name,mobileNo}=request.body
+
+    const sql=`INSERT INTO students (name,email,course_id,mobile_no) VALUES (?,?,?,?)`
+
+    pool.query(sql,[name,email,courseId,mobileNo],(error,data)=>{
+        response.send(result.createResult(error,data))
+    })
+})
+
+router.put("/update/:courseId", (req, res) => {
     const { courseId } = req.params
     const {courseName,description,fees,startDate,endDate,videoExpireDays} = request.body
 
