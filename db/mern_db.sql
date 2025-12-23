@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS mern_db;
+ DROP DATABASE IF EXISTS mern_db;
 show databases;
 create database mern_db;
 
