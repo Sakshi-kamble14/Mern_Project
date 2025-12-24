@@ -6,14 +6,27 @@ const router = express.Router()
 
 
 
-// 1
+// resister student
 
 router.post("/register", (req, res) => {
     const { name, email,course_id , mobile_no } = req.body;
+
+
+    const checkUser = `SELECT * FROM users WHERE email=?`
+    pool.query(checkUser,[email],(error,users)=>{
+        if(users.length === 0){
+            res.send(result.createResult("User is not found .Please login first ")
+        )
+        }
+
+
     const sql = `INSERT INTO students (name, email, course_id, mobile_no) VALUES (?, ?, ?, ?)`;
-    
-    pool.query(sql, [name, email, course_id, mobile_no], (error, data) => {
+        pool.query(sql, [name, email, course_id, mobile_no], (error, data) => {
         res.send(result.createResult(error, data));
+    })
+
+    
+
     });
 });
 
@@ -28,21 +41,21 @@ router.put("/change_password", (req, res) => {
     });
 });
 
-// 3
+// get all courses
 
 router.get("/courses", (req, res) => {
- 
-    const sql = `
-        SELECT c.* FROM courses c
-        INNER JOIN students s ON c.course_id = s.course_id
-        WHERE s.email = ?`;
 
-    pool.query(sql,(error, data) => {
+    const sql = `
+        SELECT  c.course_id,c.course_name,s.name,s.email
+        FROM students s
+        JOIN courses c ON s.course_id = c.course_id
+    `;
+    pool.query(sql, (error, data) => {
         res.send(result.createResult(error, data));
     });
 });
 
-//4
+// get all courses with  valid videos
 
 router.get("/course_with_videos", (req, res) => {
   
