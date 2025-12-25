@@ -51,8 +51,8 @@ router.post('/student/register-to-course',(request,response)=>{
     })
 })
 
-router.put("/update/:courseId", (req, res) => {
-    const { courseId } = req.params
+router.put("/update/:courseId", (request, response) => {
+    const { courseId } = request.params
     const {courseName,description,fees,startDate,endDate,videoExpireDays} = request.body
 
     const sql = `UPDATE courses SET course_name=?,description=?,fees=?,start_date=?,end_date=?,video_expire_days=? WHERE course_id =?`
