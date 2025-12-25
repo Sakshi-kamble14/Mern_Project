@@ -1,10 +1,11 @@
-DROP DATABASE IF EXISTS mern_db;
+ DROP DATABASE IF EXISTS mern_db;
 show databases;
 create database mern_db;
 
 use mern_db;
 
 DROP TABLE IF EXISTS users;
+
 
 CREATE TABLE users (
     email VARCHAR(100) PRIMARY KEY,
