@@ -19,10 +19,20 @@ router.post('/signin', (req, res) => {
             // create the JWT token
             // inside the payload store the data that needs to be encryted into the token
             const payload = {
+
                 email: user.email
             }
             const token = jwt.sign(payload, config.secret)
             const userData = {
+
+
+                uid: user.uid,
+                email: user.email
+            }
+            const token = jwt.sign(payload, config.SECRET)
+            const userData = {
+                name: user.name,
+                mobile: user.mobile,
 
                 token
             }
