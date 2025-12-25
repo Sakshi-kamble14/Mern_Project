@@ -1,0 +1,241 @@
+{
+  "info": {
+    "_postman_id": "c5b2b9a6-1234-4cde-9a11-mern2025api",
+    "name": "MERN Internship 2025 API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:7400"
+    }
+  ],
+  "item": [
+    {
+      "name": "User APIs",
+      "item": [
+        {
+          "name": "User Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"course_id\": 1,\n  \"mobile_no\": \"9876543210\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "register"]
+            }
+          }
+        },
+        {
+          "name": "User Signin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/signin",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "signin"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Course APIs (Admin)",
+      "item": [
+        {
+          "name": "Get All Courses",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/course/all-courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["course", "all-courses"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Courses",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/course/all-active-course",
+              "host": ["{{baseUrl}}"],
+              "path": ["course", "all-active-course"]
+            }
+          }
+        },
+        {
+          "name": "Add Course",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseName\": \"MERN Stack\",\n  \"description\": \"Full MERN Course\",\n  \"fees\": 15000,\n  \"startDate\": \"2025-01-01\",\n  \"endDate\": \"2025-06-01\",\n  \"videoExpireDays\": 30\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/course/add-course",
+              "host": ["{{baseUrl}}"],
+              "path": ["course", "add-course"]
+            }
+          }
+        },
+        {
+          "name": "Update Course",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseName\": \"Updated MERN\",\n  \"description\": \"Updated Description\",\n  \"fees\": 18000,\n  \"startDate\": \"2025-01-10\",\n  \"endDate\": \"2025-06-10\",\n  \"videoExpireDays\": 45\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/course/update/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["course", "update", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Course",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/course/delete/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["course", "delete", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Student APIs",
+      "item": [
+        {
+          "name": "Register Student",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Student One\",\n  \"email\": \"student@example.com\",\n  \"course_id\": 1,\n  \"mobile_no\": \"9999999999\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/student/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["student", "register"]
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@example.com\",\n  \"newPassword\": \"new123\",\n  \"confirmPassword\": \"new123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/student/change_password",
+              "host": ["{{baseUrl}}"],
+              "path": ["student", "change_password"]
+            }
+          }
+        },
+        {
+          "name": "Student Courses",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/student/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["student", "courses"]
+            }
+          }
+        },
+        {
+          "name": "Courses With Videos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/student/course_with_videos",
+              "host": ["{{baseUrl}}"],
+              "path": ["student", "course_with_videos"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Video APIs",
+      "item": [
+        {
+          "name": "Get Videos by Course",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/video/all_videos?course_id=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["video", "all_videos"],
+              "query": [{ "key": "course_id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Add Video",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"course_id\": 1,\n  \"title\": \"Intro Video\",\n  \"youtube_url\": \"https://youtube.com/demo\",\n  \"description\": \"Introduction\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/video/add",
+              "host": ["{{baseUrl}}"],
+              "path": ["video", "add"]
+            }
+          }
+        },
+        {
+          "name": "Update Video",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"course_id\": 1,\n  \"title\": \"Updated Title\",\n  \"description\": \"Updated\",\n  \"youtube_url\": \"https://youtube.com/new\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/video/update/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["video", "update", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Video",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/video/delete/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["video", "delete", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
