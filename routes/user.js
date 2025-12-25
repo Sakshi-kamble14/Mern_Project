@@ -4,7 +4,6 @@ const pool=require('../db/pool')
 const result=require('../utils/result')
 
 const router=express.Router()
-
 router.post('/signin', (req, res) => {
     const { email, password } = req.body
     const hashedPassword = cryptojs.SHA256(password).toString()
@@ -19,21 +18,10 @@ router.post('/signin', (req, res) => {
             // create the JWT token
             // inside the payload store the data that needs to be encryted into the token
             const payload = {
-
                 email: user.email
             }
             const token = jwt.sign(payload, config.secret)
             const userData = {
-
-
-                uid: user.uid,
-                email: user.email
-            }
-            const token = jwt.sign(payload, config.SECRET)
-            const userData = {
-                name: user.name,
-                mobile: user.mobile,
-
                 token
             }
             res.send(result.createResult(null, userData))
