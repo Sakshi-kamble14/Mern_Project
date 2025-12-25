@@ -33,7 +33,6 @@ router.post('/signin', (req, res) => {
 router.post("/signup", (req, res) => {
     const { name, email,course_id , mobile_no, password  } = req.body;
   
-    
     const insertUser = `INSERT INTO USERS (email, password, role) VALUES (?, ?, 'student')`
     const hashedPassword = cryptojs.SHA256(password).toString()
      pool.query(insertUser, [email, hashedPassword], (error, data) => {
