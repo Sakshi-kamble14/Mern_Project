@@ -28,16 +28,20 @@ router.post('/signin', (req, res) => {
         }
     })
 })
-router.post("/register", (req, res) => {
+
+// Adding the hashed password
+router.post("/signup", (req, res) => {
     const { name, email,course_id , mobile_no, password  } = req.body;
-    // console.log("req.body");
+  
     
-    //insert into users table using just "Email", "Password"
     const insertUser = `INSERT INTO USERS (email, password, role) VALUES (?, ?, 'student')`
-     pool.query(insertUser, [email, password], (error, data) => {
-        if(error)
+    const hashedPassword = cryptojs.SHA256(password).toString()
+     pool.query(insertUser, [email, hashedPassword], (error, data) => {
+       if(error)
         res.send(result.createResult(error, data));
      })    
+
+     
  
     const checkUser = `SELECT * FROM users WHERE email=?`
     pool.query(checkUser,[email],(error)=>{
