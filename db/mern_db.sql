@@ -6,6 +6,7 @@ use mern_db;
 
 DROP TABLE IF EXISTS users;
 
+
 CREATE TABLE users (
     email VARCHAR(100) PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
@@ -29,9 +30,9 @@ DROP TABLE IF EXISTS students;
 CREATE TABLE students (
     reg_no INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
-    email VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
     course_id INT,
-    mobile_no BIGINT,
+    mobile_no VARCHAR(10) CHECK (CHAR_LENGTH(mobile_no) = 10),
     profile_pic BLOB,
     FOREIGN KEY (email) REFERENCES users(email),
     FOREIGN KEY (course_id) REFERENCES courses(course_id)
