@@ -30,7 +30,7 @@ DROP TABLE IF EXISTS students;
 CREATE TABLE students (
     reg_no INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
-    email VARCHAR(100) UNIQUE,
+    email VARCHAR(100),
     course_id INT,
     mobile_no VARCHAR(10) CHECK (CHAR_LENGTH(mobile_no) = 10),
     profile_pic BLOB,
