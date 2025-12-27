@@ -22,7 +22,7 @@ router.get("/all_videos",(req,res) => {
     })
 })
 
-router.put("/update/:video_id",(req,res) => {
+router.patch("/update/:video_id",(req,res) => {
     const { video_id } = req.params
     const {course_id, title, description,youtube_url} = req.body
 
@@ -33,6 +33,8 @@ router.put("/update/:video_id",(req,res) => {
 
 })
 
+
+//added another approach for delete video using subscript logic
 router.delete("/delete/:video_id",(req,res) => {
     const video_id = req.params.video_id
     const sql = `DELETE FROM videos WHERE video_id = ?`
