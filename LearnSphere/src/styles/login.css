@@ -1,0 +1,130 @@
+/* Page background */
+.login-bg {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(135deg, #9fa4ff, #6a6fdc);
+}
+
+/* Login card css */
+.login-card {
+  width: 100%;
+  max-width: 360px;
+  padding: 2rem 1.8rem 1.8rem;
+
+  background: linear-gradient(180deg, #0f2a4f, #0b1f3a);
+  border-radius: 16px;
+
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.35),
+    0 10px 20px rgba(0, 0, 0, 0.25);
+
+  animation: fadeIn 0.7s ease;
+  position: relative;
+}
+
+/* User icon  */
+.login-card::before {
+  content: "👤";
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 70px;
+  height: 70px;
+  background: #081a33;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: white;
+
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Form label & input  */
+.login-card .form-label {
+  color: #cfd8ff;
+  font-size: 0.9rem;
+}
+
+.login-card .form-control {
+  height: 44px;
+  border-radius: 8px;
+  border: none;
+  padding-left: 12px;
+
+  background: #e6e6e6;
+  font-size: 0.95rem;
+}
+
+.login-card .form-control:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(159, 164, 255, 0.6);
+}
+
+
+
+
+Login button 
+.login-card .btn-success {
+  background: linear-gradient(180deg, #020c1a, #000814);
+  border: none;
+  height: 45px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.login-card .btn-success:hover {
+  opacity: 0.9;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@media (max-width: 576px) {
+  .login-card {
+    margin: 0 15px;
+  }
+}
+
+/* Login heading */
+.login-card h1,
+.login-card h2 {
+  color: #ffffff;
+  padding: 20px;
+}
+
+/* Don't have an account text */
+.login-card .text-center {
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+/* Register link */
+.login-card .text-center a {
+  color: #9fa4ff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.login-card .text-center a:hover {
+  text-decoration: underline;
+}
