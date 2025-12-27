@@ -1,0 +1,44 @@
+/* Card hover animation */
+.course-card {
+  transition: all 0.3s ease-in-out;
+  border-radius: 12px;
+}
+
+.course-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Image zoom on hover */
+.course-img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.course-card:hover .course-img {
+  transform: scale(1.05);
+}
+
+/* Fade-in animation */
+.fade-in {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button hover */
+.card button {
+  transition: all 0.3s ease;
+}
+
+.card button:hover {
+  transform: scale(1.05);
+}
