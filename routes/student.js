@@ -3,47 +3,42 @@ const pool = require("../db/pool")
 const result = require("../utils/result")
 
 const router = express.Router()
-
-
-
-// resister student
-
-router.post("/register", (req, res) => {
-    const { name, email,course_id , mobile_no } = req.body;
-
-
-    const checkUser = `SELECT * FROM users WHERE email=?`
-    pool.query(checkUser,[email],(error,users)=>{
-        if(users.length === 0){
-            res.send(result.createResult("User is not found .Please login first ")
-        )
-        }
-
-
-    const sql = `INSERT INTO students (name, email, course_id, mobile_no) VALUES (?, ?, ?, ?)`;
-        pool.query(sql, [name, email, course_id, mobile_no], (error, data) => {
-        res.send(result.createResult(error, data));
-    })
-
-    
-
-    });
-});
+const cryptojs = require("crypto-js");
 
 
 //Change_Password
-
 router.put("/change_password", (req, res) => {
-    const { newPassword, confirmPassword,email } = req.body;
-    const sql = `UPDATE users SET password = ? WHERE email = ?`;
-    pool.query(sql, [newPassword, email], (error, data) => {
-        res.send(result.createResult(error, data));
-    });
+
+    //just added UI side confirm password validation, not used in db query
+    const { newPassword, confirmPassword, email } = req.body;
+
+    if (newPassword == confirmPassword) {
+        const hashedPassword = cryptojs.SHA256(newPassword).toString();
+
+        //check if given email is present in users table
+        const checkEmailSql = `SELECT * FROM users WHERE email = ?`;
+        pool.query(checkEmailSql, [email], (error, data) => {
+            if (data.length <= 0) {
+                return res.status(404).send(result.createResult("Email not found"));
+
+            } else {
+                const sql = `UPDATE users SET password = ? WHERE email = ?`;
+                pool.query(sql, [hashedPassword, email], (error, data) => {
+                    res.send(result.createResult(error, data));
+                });
+            }
+        });
+
+    }
+    else {
+        return res.status(400).send(result.createResult("New Password and Confirm Password do not match"));
+    }
 });
 
-// get all courses
 
-router.get("/courses", (req, res) => {
+
+// get all courses
+router.get("/my-courses", (req, res) => {
 
     const sql = `
         SELECT  c.course_id,c.course_name,s.name,s.email
@@ -51,24 +46,38 @@ router.get("/courses", (req, res) => {
         JOIN courses c ON s.course_id = c.course_id
     `;
     pool.query(sql, (error, data) => {
-        res.send(result.createResult(error, data));
+
+        if (data.length > 0) {
+                    res.status(200).send(result.createResult(null, data));
+
+        } else {
+            res.status(404).send(result.createResult("Something went wrong! No courses found."));
+        }
+
     });
 });
 
 // get all courses with  valid videos
+router.get("/my_courses_with_videos", (req, res) => {
 
-router.get("/course_with_videos", (req, res) => {
-  
     const sql = `
-        SELECT c.course_name, v.title, v.youtube_url, v.added_at
+        SELECT  c.course_id,c.course_name,s.name,s.email,v.video_id,v.title,v.youtube_url,v.description
         FROM students s
         JOIN courses c ON s.course_id = c.course_id
         JOIN videos v ON c.course_id = v.course_id
-        WHERE DATEDIFF(CURDATE(), v.added_at) <= c.video_expire_days`
+        WHERE DATEDIFF(CURDATE(), v.added_at) <= c.video_expire_days`;
 
     pool.query(sql, (error, data) => {
-        
-        res.send(result.createResult(error, data));
+
+        if (data.length > 0) {
+                    res.status(200).send(result.createResult(null, data));
+
+        } else {
+            res.status(404).send(result.createResult("Something went wrong! No courses found."));
+        }
+
     });
 });
- module.exports = router
+
+
+module.exports = router
