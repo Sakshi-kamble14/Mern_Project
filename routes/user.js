@@ -10,24 +10,31 @@ const config = require('../utils/config')
 const router = express.Router()
 
 router.post('/login', (req, res) => {
-    const { email, password } = req.body
-    const hashedPassword = cryptojs.SHA256(password).toString()
-    const sql = `SELECT * FROM users WHERE email = ? AND password = ?`
-    pool.query(sql, [email, hashedPassword], (error, data) => {
-        if (error)
-            res.status(500).send(result.createResult(error))
-        else if (data.length == 0){
-            res.status(401).send(result.createResult("Invalid email or password"))}
-        else {
-            const user = data[0]
-            const payload = {
-                email: user.email
-            }
-            const token = jwt.sign(payload, config.SECRET)
-            res.status(201).send(result.createResult(null, token))
-        }
-    })
+  const { email, password } = req.body
+
+  const hashedPassword = cryptojs.SHA256(password).toString()
+
+  const sql = `SELECT email, role FROM users WHERE email = ? AND password = ?`
+
+  pool.query(sql, [email, hashedPassword], (error, data) => {
+    if (error) {
+      return res.status(500).send(result.createResult(error))
+    }
+
+    if (data.length === 0) {
+      return res.status(401).send(
+        result.createResult("Invalid email or password")
+      )
+    }
+
+    const user = data[0]
+
+    const token = jwt.sign({ email: user.email, role: user.role },config.SECRET)
+
+    res.status(200).send(result.createResult(null, {token,role: user.role}))
 })
+})
+
 
 router.post("/register", async (req, res) => {
 

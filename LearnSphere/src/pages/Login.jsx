@@ -10,20 +10,35 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { setLoginStatus } = useContext(LoginContext);
+  const { setLoginStatus, setRole } = useContext(LoginContext);
 
   const signin = async () => {
-    if (!email) toast.warn("Email must be entered");
-    else if (!password) toast.warn("Password must be entered");
-    else {
-      const result = await loginUser(email, password);
-      if (result.status === "success") {
-        setLoginStatus(true);
-        toast.success("Login successful");
-        navigate("/dashboard");
-      } else {
-        toast.error(result.error);
-      }
+    if (!email) {
+      toast.warn("Email must be entered");
+      return;
+    }
+
+    if (!password) {
+      toast.warn("Password must be entered");
+      return;
+    }
+
+    const result = await loginUser(email, password);
+
+    if (result.status === "success") {
+      const { token, role } = result.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
+
+      setLoginStatus(true);
+      setRole(role);
+
+      toast.success("Login successful");
+
+      navigate(role === "admin" ? "/admin" : "/");
+    } else {
+      toast.error(result.error);
     }
   };
 

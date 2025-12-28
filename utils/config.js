@@ -1,3 +1,3 @@
-const secret = "abcdefghijklmnopqrstuvwxyz"
+const SECRET = "abcdefghijklmnopqrstuvwxyz"
 
-module.exports = {secret}
+module.exports = {SECRET}

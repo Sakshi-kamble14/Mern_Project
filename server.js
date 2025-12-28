@@ -1,5 +1,5 @@
 const express=require('express')
-
+const cors=require('cors')
 
 const app=express()
 const PORT=7400
@@ -8,6 +8,7 @@ const studRouter = require("./routes/student")
 const videoRouter = require("./routes/video")
 const userRouter=require("./routes/user")
 
+app.use(cors())
 app.use(express.json())
 app.use('/course',courseRouter)
 app.use("/student",studRouter)
