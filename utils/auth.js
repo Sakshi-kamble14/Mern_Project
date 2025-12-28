@@ -5,7 +5,7 @@ const result = require("./result")
 
 
 function authUser(req,res,next){
-    const allAllowedUrls = ["/user/signup" , "/user/signin"]
+    const allAllowedUrls = ["/user/login" , "/user/register"]
     if(allAllowedUrls.includes(req.url))
         next()
     else{
@@ -14,7 +14,7 @@ function authUser(req,res,next){
             res.send(result.createResult("Token is missing"))
         else{
             try{
-                const payload = jwt.verify(token,config.secret)
+                const payload = jwt.verify(token,config.SECRET)
                 // req.header.payload = payload
                 req.headers.email = payload.email
               return next()
@@ -24,3 +24,5 @@ function authUser(req,res,next){
         }
     }
 }
+
+module.exports={authUser}

@@ -11,7 +11,7 @@ import javaImg from "../images/java.png";
 import "../styles/home.css"; 
 
 
-export default function Home() {
+function Home() {
   const courseImages = {
     "IIT-MERN-2025": mernImg,
     "AI": aiImg,
@@ -37,7 +37,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
+      
 
       <div className="container mt-4">
         <div className="row">
@@ -48,7 +48,7 @@ export default function Home() {
               >
                 <div className="card h-100 course-card">
                   <img
-                    src={courseImages[course.course_name] || pythonImg}
+                    src={courseImages[course.course_name]}
                     alt={course.course_name}
                     className="card-img-top mx-auto course-img"
                     style={{ height: "180px", padding: "5px" }}
@@ -75,3 +75,5 @@ export default function Home() {
     </>
   );
 }
+
+export default Home

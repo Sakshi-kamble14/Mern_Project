@@ -1,33 +1,42 @@
-import React, { createContext, useState } from 'react'
-import { Route, Routes } from 'react-router'
-import { ToastContainer } from 'react-toastify'
-import Home from './pages/Home'
-import About from './pages/About'
-import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import ProtectedRoute from './components/ProtectedRoute'
-import Register from './pages/Register'
+import React, { createContext, useState } from "react";
+import { Route, Routes, Navigate } from "react-router";
+import { ToastContainer } from "react-toastify";
+import Home from "./pages/Home";
+import Admin from "./pages/Admin";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Navbar from "./components/Navbar";
 
-export const LoginContext = createContext()
+export const LoginContext = createContext();
 
 function App() {
-  const [loginStatus, setLoginStatus] = useState(false)
+  const [loginStatus, setLoginStatus] = useState(
+    !!localStorage.getItem("token")
+  );
+
+  const [role, setRole] = useState(
+    localStorage.getItem("role")
+  );
 
   return (
     <>
-      <LoginContext.Provider value={{ loginStatus, setLoginStatus }}>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register/>}/>
+      <LoginContext.Provider
+        value={{ loginStatus, setLoginStatus, role, setRole }}
+      >
+        <Navbar />
 
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* ADMIN PROTECTED ROUTE */}
           <Route
-            path='/dashboard'
+            path="/admin"
             element={
-              
-                <Dashboard />
-              
+              loginStatus && role === "admin"
+                ? <Admin />
+                : <Navigate to="/login" />
             }
           />
         </Routes>
@@ -35,7 +44,7 @@ function App() {
 
       <ToastContainer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
