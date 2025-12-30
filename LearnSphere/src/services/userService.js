@@ -18,7 +18,17 @@ export async function registerUser(name, email, password, mobile) {
 }
 
 
-export async function getUserProfile(token){
-    const URL = config.BASE_URL
-    
+export async function getUserProfile(token) {
+    const URL = config.BASE_URL + '/user'
+    const headers = { token }
+    const response = await axios.get(URL, { headers })
+    return response.data
+}
+
+export async function updateProfile(token, mobile) {
+    const URL = config.BASE_URL + '/user'
+    const headers = { token }
+    const body = { mobile }
+    const response = await axios.put(URL, body, { headers })
+    return response.data
 }

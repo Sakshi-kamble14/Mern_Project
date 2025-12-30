@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { getAllCourses } from "../services/courseService";
+import { getActiveCourses, getAllCourses } from "../services/courseService";
 
 import mernImg from "../images/mern.png";
 import aiImg from "../images/ai.png";
@@ -28,7 +28,7 @@ function Home() {
   }, []);
 
   const fetchCourses = async () => {
-    const result = await getAllCourses();
+    const result = await getActiveCourses();
     if (result.status === "success") {
       setCourses(result.data);
     }
