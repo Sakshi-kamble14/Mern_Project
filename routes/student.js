@@ -79,5 +79,44 @@ router.get("/my_courses_with_videos", (req, res) => {
     });
 });
 
+// ---------------- ALL STUDENTS ----------------
+router.get("/all_students", (req, res) => {
+  const sql = `
+    SELECT 
+      s.reg_no,
+      s.name,
+      s.email,
+      IFNULL(c.course_name, 'N/A') AS course_name,
+      s.mobile_no
+    FROM students s
+    LEFT JOIN courses c ON s.course_id = c.course_id
+  `;
+
+  pool.query(sql, (error, data) => {
+    res.send(result.createResult(error, data));
+  });
+});
+
+// ---------------- FILTER BY COURSE ----------------
+router.get("/all_students/by-course/:courseId", (req, res) => {
+  const { courseId } = req.params;
+
+  const sql = `
+    SELECT 
+      s.reg_no,
+      s.name,
+      s.email,
+      c.course_name,
+      s.mobile_no
+    FROM students s
+    JOIN courses c ON s.course_id = c.course_id
+    WHERE s.course_id = ?
+  `;
+
+  pool.query(sql, [courseId], (error, data) => {
+    res.send(result.createResult(error, data));
+  });
+});
+
 
 module.exports = router

@@ -43,6 +43,12 @@ router.delete("/delete/:video_id",(req,res) => {
         res.send(result.createResult(error,data))
     })
 })
-
+router.get("/all_video",(req,res) => {
+    
+    const sql = `SELECT * FROM videos`
+    pool.query(sql,(error,data)  => {
+        res.send(result.createResult(error,data))
+        })
+  })
 
   module.exports = router

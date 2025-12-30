@@ -24,7 +24,7 @@ router.get("/all-courses", (request, response) => {
 
 
 router.get('/all-active-course',(request,response)=>{
- const sql = `SELECT * FROM courses WHERE start_date <= CURRENT_DATE() AND end_date >= CURRENT_DATE()`;    
+ const sql = `SELECT * FROM courses WHERE end_date <= CURRENT_DATE()`;    
  pool.query(sql,(error,data)=>{
         response.send(result.createResult(error,data))
     })
@@ -65,5 +65,6 @@ router.delete("/delete/:courseId", (request, response) => {
         response.send(result.createResult(error, data))
     })
 })
+
 
 module.exports=router
