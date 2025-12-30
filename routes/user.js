@@ -81,4 +81,32 @@ router.post("/register", async (req, res) => {
         res.status(500).send(result.createResult(ex))
     }
 })
+
+router.post("/registertocourse",verifyToken,onlyStudent,(req, res) => {
+
+    const { name, email, course_id, mobile_no } = req.body
+
+   
+    const loggedInEmail = req.user.email
+
+    if (email !== loggedInEmail) {
+      return res.send(
+        result.createResult("Entered email does not match logged-in email")
+      )
+    }
+
+    const sql = `
+      INSERT INTO students (name, email, course_id, mobile_no, profile_pic)
+      VALUES (?, ?, ?, ?, NULL)
+    `
+
+    pool.query(
+      sql,
+      [name, loggedInEmail, course_id, mobile_no],
+      (error, data) => {
+        res.send(result.createResult(error, data))
+      }
+    )
+  }
+)
 module.exports = router
