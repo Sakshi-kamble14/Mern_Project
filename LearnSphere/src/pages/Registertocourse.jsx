@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
-import {registercourse} from "../services/courseServices"
+import {registercourse} from "../services/courseService"
 import { useNavigate, useParams } from "react-router"
 
 function Registertocourse() {
+  // const { course_id } = useParams();
   const navigate = useNavigate();
 
 const [name, setName] = useState('')
@@ -10,7 +11,7 @@ const [email, setEmail] = useState('')
 const [courseid,setCourseid] = useState(null)
 const [mobile_no,setMobile] = useState('')
 useEffect(() => {
-  const token = sessionStorage.getItem("token")
+  const token = localStorage.getItem("token")
   const storedCourseId = localStorage.getItem("course_id");
   if (!token) {
     alert("Please login first")

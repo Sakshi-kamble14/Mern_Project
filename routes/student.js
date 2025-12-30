@@ -57,25 +57,30 @@ router.get("/my-courses", (req, res) => {
     });
 });
 
-// get all courses with  valid videos
+
+
 router.get("/my_courses_with_videos", (req, res) => {
+   
+    const email = req.query; 
 
     const sql = `
-        SELECT  c.course_id,c.course_name,s.name,s.email,v.video_id,v.title,v.youtube_url,v.description
+        SELECT c.course_id, c.course_name, s.name, s.email, v.video_id, v.title, v.youtube_url, v.description
         FROM students s
         JOIN courses c ON s.course_id = c.course_id
         JOIN videos v ON c.course_id = v.course_id
-        WHERE DATEDIFF(CURDATE(), v.added_at) <= c.video_expire_days`;
+        WHERE s.email = ? 
+        AND DATEDIFF(CURDATE(), v.added_at) <= c.video_expire_days`;
 
-    pool.query(sql, (error, data) => {
-
-        if (data.length > 0) {
-                    res.status(200).send(result.createResult(null, data));
-
-        } else {
-            res.status(404).send(result.createResult("Something went wrong! No courses found."));
+    pool.query(sql, [email], (error, data) => {
+        if (error) {
+            return res.status(500).send(result.createResult(error.message));
         }
 
+        if (data.length > 0) {
+            res.status(200).send(result.createResult(null, data));
+        } else {
+            res.status(404).send(result.createResult("No active courses found for this email."));
+        }
     });
 });
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { getAllCourses } from "../services/courseService";
+import { Link } from "react-router"
 
 import mernImg from "../images/mern.png";
 import aiImg from "../images/ai.png";
@@ -20,30 +21,43 @@ function Home() {
     "Java": javaImg
   };
 
-  const [courses, setCourses] = useState([]);
+  const [course, setCourse] = useState([]);
 
 
   useEffect(() => {
-    fetchCourses();
+    getCourse()
   }, []);
 
-  const fetchCourses = async () => {
-    const result = await getAllCourses();
-    if (result.status === "success") {
-      setCourses(result.data);
+   const getCourse = async () => {
+        const result = await getAllCourses()
+        if(result.status == "success"){
+            // localStorage.setItem('course_id',result.data.course_id)
+            setCourse(result.data)
+        }
     }
-   
+
+    const handleViewMore = (course_id) => {
+    localStorage.setItem("course_id", course_id);
   };
+
+    const formatDate = (dateStr) => {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString("en-IN", {
+             day: "2-digit",
+            month: "short",
+            year: "numeric",
+         });
+    };
+
 
   return (
     <>
-      
-
+      <Navbar />
       <div className="container mt-4">
         <div className="row">
-          {courses.map((course) => (
+          {course.map((course) => (
               <div
-                key={course.id}
+                key={course.course_id}
                 className="col-lg-4 col-md-6 col-sm-12 mt-3 fade-in"
               >
                 <div className="card h-100 course-card">
@@ -59,19 +73,17 @@ function Home() {
                       {course.course_name}
                     </h5>
 
-                    <p className="card-text flex-grow-1 text-muted">
-                      {course.description}
-                    </p>
+     <h6 className="card-subtitle mb-2 text-body-secondary"> Start: {formatDate(course.start_date)}</h6>
 
-                    <button className="btn btn-primary mt-auto">
-                      View More
-                    </button>
+                  <Link className="btn btn-primary" to="/courseInfo" onClick={() => handleViewMore(course.course_id)}> View More </Link>
                   </div>
                 </div>
               </div>
             ))}
         </div>
       </div>
+
+      
     </>
   );
 }

@@ -10,7 +10,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { setLoginStatus, setRole } = useContext(LoginContext);
+  const { loginStatus,setLoginStatus} = useContext(LoginContext)
+  const { role, setRole } = useContext(LoginContext);
 
   const signin = async () => {
     if (!email) {
@@ -36,7 +37,7 @@ export default function Login() {
 
       toast.success("Login successful");
 
-      navigate(role === "admin" ? "/admin" : "/");
+      navigate('/home');
     } else {
       toast.error(result.error);
     }
