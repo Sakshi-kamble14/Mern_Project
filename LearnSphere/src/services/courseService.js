@@ -21,3 +21,25 @@ export async function addCourse(courseName,description,fees,startDate,endDate,vi
     return response.data
     
 }
+export async function getCourseById(course_id){
+    const URL = config.BASE_URL +"/course/"+ course_id;
+    const response = await axios.get(URL)
+    return response.data
+}
+
+export async function registercourse(data) {
+  const URL = config.BASE_URL + "/user/registertocourse"
+
+  const token = localStorage.getItem("token")
+
+  const response = await axios.post(
+    URL,
+    data,
+    {
+     headers: { Authorization: `Bearer ${token}` }
+
+    }
+  )
+
+  return response.data
+}
