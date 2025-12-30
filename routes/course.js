@@ -1,10 +1,20 @@
 const express=require('express')
 const pool=require('../db/pool')
 const result=require('../utils/result')
+const { authAdmin } = require('../utils/auth')
 
 const router=express.Router()
 
+// common route (accessed by anyone)
+router.get('/all-active-courses',(request,response)=>{
+ const sql = `SELECT * FROM courses WHERE end_date >= CURRENT_DATE()`;    
+ pool.query(sql,(error,data)=>{
+        response.send(result.createResult(error,data))
+    })
+})
 
+// below this all are admin routes
+router.use(authAdmin)
 router.get("/all-courses", (request, response) => {
     const { startDate, endDate } = request.query
 
@@ -22,14 +32,6 @@ router.get("/all-courses", (request, response) => {
     })
 })
 
-
-router.get('/all-active-course',(request,response)=>{
- const sql = `SELECT * FROM courses WHERE end_date <= CURRENT_DATE()`;    
- pool.query(sql,(error,data)=>{
-        response.send(result.createResult(error,data))
-    })
-})
-
 router.post("/add-course", (request, response) => {
     const {courseName,description,fees,startDate,endDate,videoExpireDays} = request.body
 
@@ -40,8 +42,6 @@ router.post("/add-course", (request, response) => {
         }
     )
 })
-
-
 
 router.put("/update/:courseId", (request, response) => {
     const { courseId } = request.params

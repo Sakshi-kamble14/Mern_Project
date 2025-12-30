@@ -3,9 +3,7 @@ const jwt = require('jsonwebtoken')
 const config = require('./config')
 const result = require('./result')
 
-const allowedUrls = ['/user/login', '/user/register',
-    '/course/all-active-courses'
-];
+const allowedUrls = ['/user/login', '/user/register','/course/all-active-courses'];
 
 function authenticateToken(req, res, next) {
     // for ever incoming request this middleware will be called
@@ -21,7 +19,10 @@ function authenticateToken(req, res, next) {
         else {
             try {                
                 const Payload = jwt.verify(token, config.SECRET)
+                // console.log("Payload", Payload);
+                
                 req.headers.email = Payload.email
+                req.headers.role = Payload.role
                 next();
             } catch (ex) {
                  res.status(401).send(result.createResult("Token not found"));

@@ -13,13 +13,16 @@ router.post('/login', (req, res) => {
   const { email, password } = req.body
 
   const hashedPassword = cryptojs.SHA256(password).toString()
+ 
 
   const sql = `SELECT email, role FROM users WHERE email = ? AND password = ?`
 
   pool.query(sql, [email, hashedPassword], (error, data) => {
+    
     if (error) {
       return res.status(500).send(result.createResult(error))
     }
+   
 
     if (data.length === 0) {
       return res.status(401).send(
@@ -82,31 +85,6 @@ router.post("/register", async (req, res) => {
     }
 })
 
-router.post("/registertocourse",verifyToken,onlyStudent,(req, res) => {
 
-    const { name, email, course_id, mobile_no } = req.body
 
-   
-    const loggedInEmail = req.user.email
-
-    if (email !== loggedInEmail) {
-      return res.send(
-        result.createResult("Entered email does not match logged-in email")
-      )
-    }
-
-    const sql = `
-      INSERT INTO students (name, email, course_id, mobile_no, profile_pic)
-      VALUES (?, ?, ?, ?, NULL)
-    `
-
-    pool.query(
-      sql,
-      [name, loggedInEmail, course_id, mobile_no],
-      (error, data) => {
-        res.send(result.createResult(error, data))
-      }
-    )
-  }
-)
 module.exports = router
