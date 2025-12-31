@@ -41,3 +41,26 @@ export async function deleteCourse(course_id, token) {
   const response = await axios.delete(URL, { headers });
   return response.data;
 }
+
+// get resistered student
+
+
+export async function getStudentCourses() {
+  const email = localStorage.getItem("email");
+
+  const URL = `${config.BASE_URL}/student/my-courses?email=${email}`;
+
+  const response = await axios.get(URL);
+
+  return response.data;
+}
+
+// get video for resistered course
+export async function getAllvideo() {
+  const email = localStorage.getItem("email");
+
+  const URL = `${config.BASE_URL}/student/my_courses_with_videos?email=${email}`;
+
+  const response = await axios.get(URL);
+
+  re
