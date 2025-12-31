@@ -3,9 +3,13 @@ const cryptojs = require("crypto-js")
 
 const pool = require("../db/pool")
 const result = require("../utils/result")
+const { authAdmin } = require("../utils/auth")
 
 const router = express.Router()
 
+
+// below this all are admin routes
+router.use(authAdmin)
 router.get("/all_videos",(req,res) => {
     const {course_id} = req.query
     const sql = `SELECT * FROM videos WHERE course_id = ?`
@@ -14,7 +18,7 @@ router.get("/all_videos",(req,res) => {
         })
   })
 
-  router.post("/add" , (req,res) =>{
+router.post("/add" , (req,res) =>{
     const  {course_id, title, youtube_url,description} = req.body
     const sql = `INSERT INTO videos (course_id, title, youtube_url,description) VALUES (?,?,?,?)`
     pool.query(sql,[course_id, title, youtube_url,description] , (error,data) => {
@@ -22,7 +26,7 @@ router.get("/all_videos",(req,res) => {
     })
 })
 
-router.patch("/update/:video_id",(req,res) => {
+router.put("/update/:video_id",(req,res) => {
     const { video_id } = req.params
     const {course_id, title, description,youtube_url} = req.body
 
@@ -32,7 +36,6 @@ router.patch("/update/:video_id",(req,res) => {
     })
 
 })
-
 
 //added another approach for delete video using subscript logic
 router.delete("/delete/:video_id",(req,res) => {
@@ -51,4 +54,5 @@ router.get("/all_video",(req,res) => {
         })
   })
 
-  module.exports = router
+
+module.exports = router

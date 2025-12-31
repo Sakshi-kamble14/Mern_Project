@@ -6,6 +6,8 @@ import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
+import Profile from "./pages/Profile";
+
 
 export const LoginContext = createContext();
 
@@ -29,6 +31,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile/>} />
+          <Route path="/My_Registered_course" element={<My_Registered_course />} />
 
           {/* ADMIN PROTECTED ROUTE */}
           <Route

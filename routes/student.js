@@ -4,9 +4,10 @@ const result = require("../utils/result")
 
 const router = express.Router()
 const cryptojs = require("crypto-js");
+const { authAdmin } = require("../utils/auth");
 
 
-//Change_Password
+//change password
 router.put("/change_password", (req, res) => {
 
     //just added UI side confirm password validation, not used in db query
@@ -34,8 +35,6 @@ router.put("/change_password", (req, res) => {
         return res.status(400).send(result.createResult("New Password and Confirm Password do not match"));
     }
 });
-
-
 
 // get all courses
 router.get("/my-courses", (req, res) => {
@@ -84,44 +83,25 @@ router.get("/my_courses_with_videos", (req, res) => {
     });
 });
 
-// ---------------- ALL STUDENTS ----------------
+// below this all are admin routes
+router.use(authAdmin)
 router.get("/all_students", (req, res) => {
-  const sql = `
-    SELECT 
-      s.reg_no,
-      s.name,
-      s.email,
-      IFNULL(c.course_name, 'N/A') AS course_name,
-      s.mobile_no
-    FROM students s
-    LEFT JOIN courses c ON s.course_id = c.course_id
-  `;
+  const sql = `SELECT s.reg_no, s.name, s.email,IFNULL(c.course_name, 'N/A') AS course_name,s.mobile_no FROM students s LEFT JOIN courses c ON s.course_id = c.course_id`;
 
   pool.query(sql, (error, data) => {
     res.send(result.createResult(error, data));
   });
 });
 
-// ---------------- FILTER BY COURSE ----------------
+
 router.get("/all_students/by-course/:courseId", (req, res) => {
   const { courseId } = req.params;
 
-  const sql = `
-    SELECT 
-      s.reg_no,
-      s.name,
-      s.email,
-      c.course_name,
-      s.mobile_no
-    FROM students s
-    JOIN courses c ON s.course_id = c.course_id
-    WHERE s.course_id = ?
-  `;
+  const sql = `SELECT  s.reg_no,s.name,s.email,c.course_name,s.mobile_no FROM students s JOIN courses c ON s.course_id = c.course_id WHERE s.course_id = ?`;
 
   pool.query(sql, [courseId], (error, data) => {
     res.send(result.createResult(error, data));
   });
 });
-
 
 module.exports = router

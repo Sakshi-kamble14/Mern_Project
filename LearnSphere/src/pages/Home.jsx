@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+<<<<<<< HEAD
 import { getAllCourses } from "../services/courseService";
 import { Link } from "react-router"
+=======
+import { getActiveCourses, getAllCourses } from "../services/courseService";
+>>>>>>> a3bf308f55bc257ba06dfa79c90b8776af17304f
 
 import mernImg from "../images/mern.png";
 import aiImg from "../images/ai.png";
@@ -28,12 +32,19 @@ function Home() {
     getCourse()
   }, []);
 
+<<<<<<< HEAD
    const getCourse = async () => {
         const result = await getAllCourses()
         if(result.status == "success"){
             // localStorage.setItem('course_id',result.data.course_id)
             setCourse(result.data)
         }
+=======
+  const fetchCourses = async () => {
+    const result = await getActiveCourses();
+    if (result.status === "success") {
+      setCourses(result.data);
+>>>>>>> a3bf308f55bc257ba06dfa79c90b8776af17304f
     }
 
     const handleViewMore = (course_id) => {
