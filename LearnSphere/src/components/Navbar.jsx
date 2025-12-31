@@ -48,6 +48,7 @@ function Navbar() {
                     Profile
                   </button>
                 </li>
+                 <Link className="nav-link" aria-current="page" to="/My_Registered_course">My Courses</Link>
                 <li>
                   <button className="dropdown-item" onClick={logout}>
                     Logout
