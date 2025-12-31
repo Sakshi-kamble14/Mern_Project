@@ -32,6 +32,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile/>} />
+          <Route path="/My_Registered_course" element={<My_Registered_course />} />
 
           {/* ADMIN PROTECTED ROUTE */}
           <Route
