@@ -63,4 +63,5 @@ export async function getAllvideo() {
 
   const response = await axios.get(URL);
 
-  re
+  return response.data;
+}
