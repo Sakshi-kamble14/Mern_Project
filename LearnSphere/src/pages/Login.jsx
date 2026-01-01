@@ -10,8 +10,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { loginStatus,setLoginStatus} = useContext(LoginContext)
-  const { role, setRole } = useContext(LoginContext);
+  const { setLoginStatus, setRole } = useContext(LoginContext);
 
   const signin = async () => {
     if (!email) {
@@ -31,13 +30,14 @@ export default function Login() {
 
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
+      localStorage.setItem("email",email)
 
       setLoginStatus(true);
       setRole(role);
 
       toast.success("Login successful");
 
-      navigate('/home');
+      navigate(role === "admin" ? "/admin" : "/");
     } else {
       toast.error(result.error);
     }

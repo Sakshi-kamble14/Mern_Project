@@ -1,33 +1,15 @@
-const jwt = require("jsonwebtoken")
-const config = require("./config")
-const result = require("./result")
+const jwt = require('jsonwebtoken')
 
-// ✅ TOKEN REQUIRED (for course registration, protected APIs)
-function verifyToken(req, res, next) {
-  const authHeader = req.headers.authorization
+const config = require('./config')
+const result = require('./result')
 
-<<<<<<< HEAD
-  if (!authHeader)
-    return res
-      .status(401)
-      .send(result.createResult("Token missing"))
-=======
-const allowedUrls = ['/user/login', '/user/register','/course/all-active-courses'];
->>>>>>> a3bf308f55bc257ba06dfa79c90b8776af17304f
 
-  const token = authHeader.split(" ")[1]
+const allowedUrls = ['/user/login', '/user/register','/course/all-active-courses','/user/registertocourse'];
 
-<<<<<<< HEAD
-  try {
-    const decoded = jwt.verify(token, config.secret)
-    req.user = decoded
-    next()
-  } catch (err) {
-    return res
-      .status(401)
-      .send(result.createResult("Invalid token"))
-  }
-=======
+function authenticateToken(req, res, next) {
+    // for ever incoming request this middleware will be called
+    const allAllowedUrls = allowedUrls;
+
     if (allAllowedUrls.includes(req.path)) {
          next(); // Skip authentication for allowed URLs
     }
@@ -48,10 +30,35 @@ const allowedUrls = ['/user/login', '/user/register','/course/all-active-courses
             }
         }
     }
->>>>>>> a3bf308f55bc257ba06dfa79c90b8776af17304f
 }
 
-// ✅ Only students can register
+function authAdmin(req, res, next) {
+    if (req.headers.role == "admin")
+        next()
+    else
+        res.send(result.createResult("You are not authorized"))
+}
+
+
+function verifyToken(req, res, next) {
+  const authHeader = req.headers.authorization
+
+  if (!authHeader)
+    return res.status(401).send({ status: "error", error: "Token missing" })
+
+  const token = authHeader.split(" ")[1]
+
+  
+  try {
+    const decoded = jwt.verify(token, config.SECRET)
+    req.user = decoded
+    next()
+  } catch (err) {
+    return res.status(401).send({ status: "error", error: "Invalid token" })
+  }
+}
+
+
 function onlyStudent(req, res, next) {
   if (req.user.role !== "student") {
     return res.send(
@@ -60,19 +67,4 @@ function onlyStudent(req, res, next) {
   }
   next()
 }
-
-// ✅ Admin check (optional)
-function authAdmin(req, res, next) {
-  if (req.user.role === "admin") next()
-  else res.send(result.createResult("You are not authorized"))
-}
-
-<<<<<<< HEAD
-module.exports = {
-  verifyToken,
-  onlyStudent,
-  authAdmin
-}
-=======
-module.exports = { authenticateToken, authAdmin }
->>>>>>> a3bf308f55bc257ba06dfa79c90b8776af17304f
+module.exports = { authenticateToken, authAdmin,onlyStudent,verifyToken }

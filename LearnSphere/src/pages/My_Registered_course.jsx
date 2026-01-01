@@ -1,6 +1,6 @@
-   import { useEffect, useState } from "react";
-import { getAllvideo, getStudentCourses } from "../srevices/CourseService"; 
-import Navbar from "../Component/Navbar";
+import { useEffect, useState } from "react";
+import { getAllvideo, getStudentCourses } from "../services/courseService"; 
+import Navbar from "../components/Navbar";
 
 
 export default function My_Registered_course() {
@@ -130,6 +130,3 @@ export default function My_Registered_course() {
  </>
 );
 }
-
-
-

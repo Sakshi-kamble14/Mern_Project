@@ -4,7 +4,7 @@ const result = require("../utils/result")
 
 const router = express.Router()
 const cryptojs = require("crypto-js");
-const { authAdmin } = require("../utils/auth");
+const { authAdmin, authenticateToken } = require("../utils/auth");
 
 
 //change password
@@ -36,31 +36,15 @@ router.put("/change_password", (req, res) => {
     }
 });
 
-// get all courses
-router.get("/my-courses", (req, res) => {
-
-    const sql = `
-        SELECT  c.course_id,c.course_name,s.name,s.email
-        FROM students s
-        JOIN courses c ON s.course_id = c.course_id
-    `;
-    pool.query(sql, (error, data) => {
-
-        if (data.length > 0) {
-                    res.status(200).send(result.createResult(null, data));
-
-        } else {
-            res.status(404).send(result.createResult("Something went wrong! No courses found."));
-        }
-
-    });
-});
 
 
 
-router.get("/my_courses_with_videos", (req, res) => {
-   
-    const email = req.query; 
+
+// get all courses with valid videos
+
+router.get("/my_courses_with_videos/:email", (req, res) => {
+    
+    const {email} = req.params; 
 
     const sql = `
         SELECT c.course_id, c.course_name, s.name, s.email, v.video_id, v.title, v.youtube_url, v.description
@@ -82,6 +66,7 @@ router.get("/my_courses_with_videos", (req, res) => {
         }
     });
 });
+
 
 // below this all are admin routes
 router.use(authAdmin)

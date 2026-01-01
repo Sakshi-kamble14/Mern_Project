@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-<<<<<<< HEAD
-import { getAllCourses } from "../services/courseService";
-import { Link } from "react-router"
-=======
-import { getActiveCourses, getAllCourses } from "../services/courseService";
->>>>>>> a3bf308f55bc257ba06dfa79c90b8776af17304f
+// import { Link } from "react-router-dom";
+import { getActiveCourses } from "../services/courseService";
 
 import mernImg from "../images/mern.png";
 import aiImg from "../images/ai.png";
@@ -13,90 +8,77 @@ import androidImg from "../images/android.png";
 import pythonImg from "../images/python.png";
 import javaImg from "../images/java.png";
 
-import "../styles/home.css"; 
-
+import "../styles/home.css";
+import { Link } from "react-router";
 
 function Home() {
+  const role = localStorage.getItem("role");
+
   const courseImages = {
     "IIT-MERN-2025": mernImg,
     "AI": aiImg,
     "Android": androidImg,
-    "Python": pythonImg,
-    "Java": javaImg
+    "Python Full Stack": pythonImg,
+    "Java": javaImg,
   };
 
-  const [course, setCourse] = useState([]);
-
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    getCourse()
+    fetchCourses();
   }, []);
 
-<<<<<<< HEAD
-   const getCourse = async () => {
-        const result = await getAllCourses()
-        if(result.status == "success"){
-            // localStorage.setItem('course_id',result.data.course_id)
-            setCourse(result.data)
-        }
-=======
   const fetchCourses = async () => {
     const result = await getActiveCourses();
-    if (result.status === "success") {
+    if (result?.status === "success") {
       setCourses(result.data);
->>>>>>> a3bf308f55bc257ba06dfa79c90b8776af17304f
     }
-
-    const handleViewMore = (course_id) => {
-    localStorage.setItem("course_id", course_id);
   };
 
-    const formatDate = (dateStr) => {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString("en-IN", {
-             day: "2-digit",
-            month: "short",
-            year: "numeric",
-         });
-    };
-
-
   return (
-    <>
-      <Navbar />
-      <div className="container mt-4">
-        <div className="row">
-          {course.map((course) => (
-              <div
-                key={course.course_id}
-                className="col-lg-4 col-md-6 col-sm-12 mt-3 fade-in"
-              >
-                <div className="card h-100 course-card">
-                  <img
-                    src={courseImages[course.course_name]}
-                    alt={course.course_name}
-                    className="card-img-top mx-auto course-img"
-                    style={{ height: "180px", padding: "5px" }}
-                  />
+    <div className="container mt-4">
+      <div className="row">
+        {courses.map((course) => (
+          <div
+            key={course.course_id}
+            className="col-lg-4 col-md-6 col-sm-12 mt-3 fade-in"
+          >
+            <div className="card h-100 course-card">
+              <img
+                src={courseImages[course.course_name]}
+                alt={course.course_name}
+                className="card-img-top mx-auto course-img"
+                style={{ height: "180px", padding: "5px" }}
+              />
 
-                  <div className="card-body d-flex flex-column">
-                    <h5 className="card-title text-center">
-                      {course.course_name}
-                    </h5>
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title text-center">
+                  {course.course_name}
+                </h5>
 
-     <h6 className="card-subtitle mb-2 text-body-secondary"> Start: {formatDate(course.start_date)}</h6>
+                <p className="card-text flex-grow-1 text-muted">
+                  {course.description}
+                </p>
 
-                  <Link className="btn btn-primary" to="/courseInfo" onClick={() => handleViewMore(course.course_id)}> View More </Link>
-                  </div>
-                </div>
+                {role === "student" ? (
+                  <Link
+                    className="btn btn-primary mt-auto"
+                    to={`/courseInfo/${course.course_id}`}
+                  >
+                    View More
+                  </Link>
+                ) : (
+                  <button className="btn btn-primary mt-auto" disabled>
+                    View More
+                  </button>
+                )}
               </div>
-            ))}
-        </div>
+            </div>
+          </div>
+        ))}
       </div>
-
-      
-    </>
+    </div>
   );
 }
 
-export default Home
+export default Home;

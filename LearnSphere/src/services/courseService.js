@@ -8,6 +8,13 @@ export async function getActiveCourses() {
     return response.data
 }
 
+export async function getCourseById(course_id,token) {
+  const headers={token}
+  const URL = `${config.BASE_URL}/course/${course_id}`;
+  const response = await axios.get(URL,{headers});
+  return response.data;
+}
+
 // below are need to token
 export async function getAllCourses(token) {
   const headers={token}
@@ -42,26 +49,45 @@ export async function deleteCourse(course_id, token) {
   return response.data;
 }
 
-// get resistered student
 
-
-export async function getStudentCourses() {
-  const email = localStorage.getItem("email");
-
-  const URL = `${config.BASE_URL}/student/my-courses?email=${email}`;
-
-  const response = await axios.get(URL);
-
+export async function registerToCourse(course_id, data, token) {
+  const headers = { token };
+  const URL = `${config.BASE_URL}/course/registerCourse/${course_id}`;
+  const response = await axios.post(URL, data, { headers });
   return response.data;
 }
 
-// get video for resistered course
-export async function getAllvideo() {
-  const email = localStorage.getItem("email");
-
-  const URL = `${config.BASE_URL}/student/my_courses_with_videos?email=${email}`;
-
-  const response = await axios.get(URL);
-
+export async function getMyCourses(email, token) {
+  const headers = { token };
+  const URL = `${config.BASE_URL}/course/my-courses?email=${email}`;
+  const response = await axios.get(URL, { headers });
+  
   return response.data;
 }
+
+export async function getMyCoursesWithVideos(token) {
+  const headers = { token };
+  const URL = `${config.BASE_URL}/course/my_courses_with_videos`;
+  const response = await axios.get(URL, { headers });
+  return response.data;
+}
+
+// export async function getStudentCourses() {
+//   const email = localStorage.getItem("email");
+
+//   const URL = `${config.BASE_URL}/student/my-courses?email=${email}`;
+
+//   const response = await axios.get(URL);
+
+//   return response.data;
+// }
+
+// export async function getAllvideo() {
+//   const email = localStorage.getItem("email");
+
+//   const URL = `${config.BASE_URL}/student/my_courses_with_videos?email=${email}`;
+
+//   const response = await axios.get(URL);
+
+//   return response.data;
+// }

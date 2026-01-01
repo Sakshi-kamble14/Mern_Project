@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router";
+// import { Link, useNavigate } from "react-router-dom";
 import { LoginContext } from "../App";
+import { Link, useNavigate } from "react-router";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -14,50 +15,89 @@ function Navbar() {
     navigate("/");
   };
 
-
   return (
-    <nav className="navbar navbar-expand-lg bg-info">
+    <nav className="navbar navbar-expand-lg bg-primary navbar-dark">
       <div className="container-fluid">
-        <Link className="navbar-brand text-white fw-bold" to="/">
+        <Link className="navbar-brand fw-bold" to="/">
           Student Portal
         </Link>
 
-        <ul className="navbar-nav ms-auto">
-          {!loginStatus ? (
-            <li className="nav-item">
-              <button
-                className="btn btn-outline-light"
-                onClick={() => navigate("/login")}
-              >
-                Login
-              </button>
-            </li>
-          ) : (
-            <li className="nav-item dropdown">
-              <button
-                className="btn btn-outline-light dropdown-toggle"
-                data-bs-toggle="dropdown"
-              >
-                {role}
-              </button>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-              <ul className="dropdown-menu dropdown-menu-end">
-                {/*  Profile  */}
-                <li>
-                  <button className="dropdown-item" onClick={()=>navigate('/profile')}>
-                    Profile
-                  </button>
-                </li>
-                 <Link className="nav-link" aria-current="page" to="/My_Registered_course">My Courses</Link>
-                <li>
-                  <button className="dropdown-item" onClick={logout}>
-                    Logout
-                  </button>
-                </li>
-              </ul>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          {/* LEFT SIDE LINKS */}
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <Link className="nav-link" to="/">
+                Home
+              </Link>
             </li>
-          )}
-        </ul>
+
+            {/* STUDENT LINKS */}
+            {loginStatus && role === "student" && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/My_Registered_course">
+                    My Courses
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">
+                    Profile
+                  </Link>
+                </li>
+              </>
+            )}
+
+            {/* ADMIN LINKS */}
+            {loginStatus && role === "admin" && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/admin">
+                  Admin Dashboard
+                </Link>
+              </li>
+            )}
+          </ul>
+
+          {/* RIGHT SIDE */}
+          <ul className="navbar-nav ms-auto">
+            {!loginStatus ? (
+              <li className="nav-item">
+                <button
+                  className="btn btn-outline-light"
+                  onClick={() => navigate("/login")}
+                >
+                  Login
+                </button>
+              </li>
+            ) : (
+              <li className="nav-item dropdown">
+                <button
+                  className="btn btn-outline-light dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                >
+                  {role}
+                </button>
+
+                <ul className="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <button className="dropdown-item" onClick={logout}>
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </li>
+            )}
+          </ul>
+        </div>
       </div>
     </nav>
   );

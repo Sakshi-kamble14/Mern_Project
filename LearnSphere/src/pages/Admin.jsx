@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AdminNavbar from "../components/AdminNavbar";
-import { getAllCourses, addCourse, getActiveCourses, deleteCourse } from "../services/courseService";
+import { getAllCourses, addCourse, getActiveCourses, deleteCourse, updateCourse } from "../services/courseService";
 import {getAllVideos,addVideo,deleteVideo,updateVideo} from "../services/videoService";
 import { getAllstudents, getStudentsByCourse } from "../services/studentService";
 import Home from './Home'
@@ -103,7 +103,7 @@ function Admin() {
 
         const handleEditCourse = (course) => {
   setEditCourseId(course.course_id);
-  setCourseName(course.course_name);
+  setCourseName(course.courseName);
   setDescription(course.description);
   setFees(course.fees);
   setStartDate(course.start_date?.slice(0, 10));
